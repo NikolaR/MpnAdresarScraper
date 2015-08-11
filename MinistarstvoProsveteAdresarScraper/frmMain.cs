@@ -17,6 +17,10 @@ namespace MinistarstvoProsveteAdresarScraper
 {
     public partial class frmMain : Form
     {
+        private List<Institution> predskolskeUstanove;
+        private List<Institution> osnovneSkole;
+        private List<Institution> srednjeSkole;
+
         public frmMain()
         {
             InitializeComponent();
@@ -62,37 +66,41 @@ namespace MinistarstvoProsveteAdresarScraper
                         MpnKnownItems.AllCountiesId);
             Log("Opštine skinute. Broj: " + municipalitiesSs.Count);
 
-            List<Institution> predskolskeUstanove = new List<Institution>();
+            
+            predskolskeUstanove = new List<Institution>();
             foreach (var mun in municipalitiesPs)
             {
                 Log("Skidam podatke o predškolskim ustanovama za opštinu: " + mun.Name);
-                predskolskeUstanove = await scraper.GetInstitutionsDetailsUrls(MpnKnownItems.VrstaUstanove.OsnovnaSkola, MpnKnownItems.AllCountiesId,
+                var inst = await scraper.GetInstitutionsDetailsUrls(MpnKnownItems.VrstaUstanove.OsnovnaSkola, MpnKnownItems.AllCountiesId,
                     mun.Id, MpnKnownItems.Vlasnistvo.Sve);
-                Log("Postoji {0} ustanova u opštini. Skidam detalje...", predskolskeUstanove.Count);
-                await scraper.PopulateInstitutionDetailsUsingDetailUrls(predskolskeUstanove);
+                Log("Postoji {0} ustanova u opštini. Skidam detalje...", inst.Count);
+                await scraper.PopulateInstitutionDetailsUsingDetailUrls(inst);
                 Log("Skinuti svi podaci o predškolskim ustanovama za opštinu " + mun.Name);
+                predskolskeUstanove.AddRange(inst);
             }
 
-            List<Institution> osnovneSkole = new List<Institution>();
+            osnovneSkole = new List<Institution>();
             foreach (var mun in municipalitiesOs)
             {
                 Log("Skidam podatke o osnovnim školama za opštinu: " + mun.Name);
-                osnovneSkole = await scraper.GetInstitutionsDetailsUrls(MpnKnownItems.VrstaUstanove.OsnovnaSkola, MpnKnownItems.AllCountiesId,
+                var inst = await scraper.GetInstitutionsDetailsUrls(MpnKnownItems.VrstaUstanove.OsnovnaSkola, MpnKnownItems.AllCountiesId,
                     mun.Id, MpnKnownItems.Vlasnistvo.Sve);
-                Log("Postoji {0} ustanova u opštini. Skidam detalje...", osnovneSkole.Count);
-                await scraper.PopulateInstitutionDetailsUsingDetailUrls(osnovneSkole);
+                Log("Postoji {0} ustanova u opštini. Skidam detalje...", inst.Count);
+                await scraper.PopulateInstitutionDetailsUsingDetailUrls(inst);
                 Log("Skinuti svi podaci o osnovnim školama za opštinu " + mun.Name);
+                osnovneSkole.AddRange(inst);
             }
 
-            List<Institution> srednjeSkole = new List<Institution>();
+            srednjeSkole = new List<Institution>();
             foreach (var mun in municipalitiesSs)
             {
                 Log("Skidam podatke o srednjim školama za opštinu: " + mun.Name);
-                srednjeSkole = await scraper.GetInstitutionsDetailsUrls(MpnKnownItems.VrstaUstanove.SrednjaSkola, MpnKnownItems.AllCountiesId,
+                var inst = await scraper.GetInstitutionsDetailsUrls(MpnKnownItems.VrstaUstanove.SrednjaSkola, MpnKnownItems.AllCountiesId,
                     mun.Id, MpnKnownItems.Vlasnistvo.Sve);
-                Log("Postoji {0} ustanova u opštini. Skidam detalje...", srednjeSkole.Count);
-                await scraper.PopulateInstitutionDetailsUsingDetailUrls(srednjeSkole);
+                Log("Postoji {0} ustanova u opštini. Skidam detalje...", inst.Count);
+                await scraper.PopulateInstitutionDetailsUsingDetailUrls(inst);
                 Log("Skinuti svi podaci o srednjim školama za opštinu " + mun.Name);
+                srednjeSkole.AddRange(inst);
             }
 
             Log("------------------------------");
