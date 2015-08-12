@@ -71,7 +71,7 @@ namespace MinistarstvoProsveteAdresarScraper
             foreach (var mun in municipalitiesPs)
             {
                 Log("Skidam podatke o predškolskim ustanovama za opštinu: " + mun.Name);
-                var inst = await scraper.GetInstitutionsDetailsUrls(MpnKnownItems.VrstaUstanove.OsnovnaSkola, MpnKnownItems.AllCountiesId,
+                var inst = await scraper.GetInstitutionsDetailsUrls(MpnKnownItems.VrstaUstanove.Predskolska, MpnKnownItems.AllCountiesId,
                     mun.Id, MpnKnownItems.Vlasnistvo.Sve);
                 Log("Postoji {0} ustanova u opštini. Skidam detalje...", inst.Count);
                 await scraper.PopulateInstitutionDetailsUsingDetailUrls(inst);
